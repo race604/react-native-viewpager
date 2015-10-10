@@ -123,7 +123,7 @@ var ViewPager = React.createClass({
     if (!this._autoPlayer) {
       this._autoPlayer = this.setInterval(
         () => {this.movePage(1);},
-        2000
+        5000
       );
     }
   },
