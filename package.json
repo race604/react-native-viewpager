@@ -1,0 +1,32 @@
+{
+  "name": "react-native-viewpager",
+  "version": "0.1.0",
+  "description": "ViewPager componnent for React Native",
+  "main": "ViewPager.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/race604/react-native-viewpager.git"
+  },
+  "keywords": [
+    "react-native-component",
+    "react-component",
+    "react-native",
+    "ios",
+    "android",
+    "viewpager",
+    "pager"
+  ],
+  "author": "Race604",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/race604/react-native-viewpager/issues"
+  },
+  "homepage": "https://github.com/race604/react-native-viewpager#readme",
+  "dependencies": {
+    "react-native": "^0.12.0",
+    "react-timer-mixin": "^0.13.3"
+  }
+}
