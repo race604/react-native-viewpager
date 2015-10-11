@@ -1,5 +1,9 @@
 # react-native-viewpager
 
+[![npm version](https://img.shields.io/npm/v/react-native-viewpager.svg?style=flat-square)](https://www.npmjs.com/package/react-native-viewpager)
+[![npm downloads](https://img.shields.io/npm/dm/react-native-viewpager.svg?style=flat-square)](https://www.npmjs.com/package/react-native-viewpager)
+
+
 This is the `ViewPager` componnent in React Native both for Android and iOS.
 This is a JavaScript-only implementation of pager for React Native. Like `ListView`,
 this can render hundreds of pages without performance issue. Better than the one in
