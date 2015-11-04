@@ -31,7 +31,10 @@ var ViewPager = React.createClass({
     dataSource: PropTypes.instanceOf(ViewPagerDataSource).isRequired,
     renderPage: PropTypes.func.isRequired,
     onChangePage: PropTypes.func,
-    renderPageIndicator: PropTypes.func,
+    renderPageIndicator: React.PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.bool
+    ]),
     isLoop: PropTypes.bool,
     locked: PropTypes.bool,
     autoPlay: PropTypes.bool,
