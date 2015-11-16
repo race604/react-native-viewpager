@@ -12,7 +12,7 @@ var {
   StyleSheet,
 } = React;
 
-var StaticRenderer = require('StaticRenderer');
+var StaticRenderer = require('react-native/Libraries/Components/StaticRenderer');
 var TimerMixin = require('react-timer-mixin');
 
 var DefaultViewPageIndicator = require('./DefaultViewPageIndicator');
