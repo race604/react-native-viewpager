@@ -1,6 +1,5 @@
 'use strict';
 
-var invariant = require('invariant');
 var isEmpty = require('isEmpty');
 var warning = require('warning');
 
