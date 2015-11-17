@@ -1,7 +1,5 @@
 'use strict';
 
-var invariant = require('invariant');
-var isEmpty = require('isEmpty');
 var warning = require('warning');
 
 function defaultGetPageData(
@@ -119,7 +117,7 @@ class ViewPagerDataSource {
 }
 
 function keyedDictionaryFromArray(arr) {
-  if (isEmpty(arr)) {
+  if (arr.length === 0) {
     return {};
   }
   var result = {};
