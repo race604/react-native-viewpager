@@ -120,6 +120,14 @@ var ViewPager = React.createClass({
         this._autoPlayer = null;
       }
     }
+
+    if (nextProps.dataSource) {
+      var constrainedPage = Math.max(0, Math.min(this.state.currentPage, nextProps.dataSource.getPageCount() - 1));
+      this.setState({
+        currentPage: constrainedPage,
+      });
+    }
+
   },
 
   _startAutoPlay() {
