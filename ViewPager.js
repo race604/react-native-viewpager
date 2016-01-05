@@ -51,12 +51,13 @@ var ViewPager = React.createClass({
     return {
       currentPage: 0,
       viewWidth: 0,
-      childIndex: 0,
       scrollValue: new Animated.Value(0)
     };
   },
 
   componentWillMount() {
+    this.childIndex = 0;
+
     var release = (e, gestureState) => {
       var relativeGestureDistance = gestureState.dx / deviceWidth,
           //lastPageIndex = this.props.children.length - 1,
@@ -94,13 +95,13 @@ var ViewPager = React.createClass({
       // Dragging, move the view with the touch
       onPanResponderMove: (e, gestureState) => {
         var dx = gestureState.dx;
-        var offsetX = -dx / this.state.viewWidth + this.state.childIndex;
+        var offsetX = -dx / this.state.viewWidth + this.childIndex;
         this.state.scrollValue.setValue(offsetX);
       },
     });
 
     if (this.props.isLoop) {
-      this.state.childIndex = 1;
+      this.childIndex = 1;
       this.state.scrollValue.setValue(1);
     }
   },
@@ -122,10 +123,17 @@ var ViewPager = React.createClass({
     }
 
     if (nextProps.dataSource) {
-      var constrainedPage = Math.max(0, Math.min(this.state.currentPage, nextProps.dataSource.getPageCount() - 1));
+      var maxPage = nextProps.dataSource.getPageCount() - 1;
+      var constrainedPage = Math.max(0, Math.min(this.state.currentPage, maxPage));
       this.setState({
         currentPage: constrainedPage,
       });
+
+      if (!nextProps.isLoop) {
+        this.state.scrollValue.setValue(constrainedPage > 0 ? 1 : 0);
+      }
+
+      this.childIndex = Math.min(this.childIndex, constrainedPage);
     }
 
   },
@@ -162,7 +170,7 @@ var ViewPager = React.createClass({
     }
 
     var moved = pageNumber !== this.state.currentPage;
-    var scrollStep = (moved ? step : 0) + this.state.childIndex;
+    var scrollStep = (moved ? step : 0) + this.childIndex;
 
     moved && this.props.onChangePage && this.props.onChangePage(pageNumber);
 
@@ -177,7 +185,7 @@ var ViewPager = React.createClass({
       .start((event) => {
         if (event.finished) {
           this.state.fling = false;
-          this.state.childIndex = nextChildIdx;
+          this.childIndex = nextChildIdx;
           this.state.scrollValue.setValue(nextChildIdx);
           this.setState({
             currentPage: pageNumber,
@@ -258,8 +266,8 @@ var ViewPager = React.createClass({
       flexDirection: 'row'
     };
 
-    // this.state.childIndex = hasLeft ? 1 : 0;
-    // this.state.scrollValue.setValue(this.state.childIndex);
+    // this.childIndex = hasLeft ? 1 : 0;
+    // this.state.scrollValue.setValue(this.childIndex);
     var translateX = this.state.scrollValue.interpolate({
       inputRange: [0, 1], outputRange: [0, -viewWidth]
     });
@@ -288,7 +296,7 @@ var ViewPager = React.createClass({
                             pageCount: pageIDs.length,
                             activePage: this.state.currentPage,
                             scrollValue: this.state.scrollValue,
-                            scrollOffset: this.state.childIndex,
+                            scrollOffset: this.childIndex,
                           })}
       </View>
     );
