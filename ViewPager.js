@@ -208,12 +208,12 @@ var ViewPager = React.createClass({
     }
   },
 
-  _getPage(pageIdx: number) {
+  _getPage(pageIdx: number, loop = false: boolean) {
     var dataSource = this.props.dataSource;
     var pageID = dataSource.pageIdentities[pageIdx];
     return (
       <StaticRenderer
-        key={'p_' + pageID}
+        key={'p_' + pageID + (loop ? '_1' : '')}
         shouldUpdate={true}
         render={this.props.renderPage.bind(
           null,
@@ -241,7 +241,7 @@ var ViewPager = React.createClass({
         pagesNum++;
         hasLeft = true;
       } else if (this.state.currentPage == 0 && this.props.isLoop) {
-        bodyComponents.push(this._getPage(pageIDs.length - 1));
+        bodyComponents.push(this._getPage(pageIDs.length - 1, true));
         pagesNum++;
         hasLeft = true;
       }
@@ -255,7 +255,7 @@ var ViewPager = React.createClass({
         bodyComponents.push(this._getPage(this.state.currentPage + 1));
         pagesNum++;
       } else if (this.state.currentPage == pageIDs.length - 1 && this.props.isLoop) {
-        bodyComponents.push(this._getPage(0));
+        bodyComponents.push(this._getPage(0, true));
         pagesNum++;
       }
     }
