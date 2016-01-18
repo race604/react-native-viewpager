@@ -38,6 +38,14 @@ var ViewPager = React.createClass({
     isLoop: PropTypes.bool,
     locked: PropTypes.bool,
     autoPlay: PropTypes.bool,
+    transitionFriction: React.PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.number
+    ]),
+    transitionTension: React.PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.number
+    ]),
   },
 
   getDefaultProps() {
@@ -72,7 +80,7 @@ var ViewPager = React.createClass({
 
       this.props.hasTouch && this.props.hasTouch(false);
 
-      this.movePage(step);
+      this.movePage(step, gestureState.vx);
     }
 
     this._panResponder = PanResponder.create({
@@ -159,7 +167,7 @@ var ViewPager = React.createClass({
     this.movePage(step);
   },
 
-  movePage(step) {
+  movePage(step, vx) {
     var pageCount = this.props.dataSource.getPageCount();
     var pageNumber = this.state.currentPage + step;
 
@@ -181,17 +189,26 @@ var ViewPager = React.createClass({
       nextChildIdx = 1;
     }
 
-    Animated.spring(this.state.scrollValue, {toValue: scrollStep, friction: 10, tension: 50})
-      .start((event) => {
-        if (event.finished) {
-          this.state.fling = false;
-          this.childIndex = nextChildIdx;
-          this.state.scrollValue.setValue(nextChildIdx);
-          this.setState({
-            currentPage: pageNumber,
-          });
-        }
-      });
+    var friction = (this.props.transitionFriction === 'number') ?
+      this.props.transitionFriction : this.props.transactionFriction(vx);
+
+    var tension = (this.props.transitionTension === 'number') ?
+      this.props.transitionTension : this.props.transactionTension(vx);
+
+    Animated.spring(this.state.scrollValue, {
+      toValue: scrollStep,
+      friction: friction,
+      tension: tension
+    }).start((event) => {
+      if (event.finished) {
+        this.state.fling = false;
+        this.childIndex = nextChildIdx;
+        this.state.scrollValue.setValue(nextChildIdx);
+        this.setState({
+          currentPage: pageNumber,
+        });
+      }
+    });
   },
 
   renderPageIndicator(props) {
