@@ -61,7 +61,7 @@ class ViewPagerDataSource {
   pageShouldUpdate(pageIndex: number): bool {
     var needsUpdate = this._dirtyPages[pageIndex];
     //    warning(needsUpdate !== undefined,
-      'missing dirtyBit for section, page: ' + pageIndex);
+    //  'missing dirtyBit for section, page: ' + pageIndex);
     return needsUpdate;
   }
 
