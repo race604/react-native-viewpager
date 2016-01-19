@@ -182,8 +182,6 @@ var ViewPager = React.createClass({
     var moved = pageNumber !== this.state.currentPage;
     var scrollStep = (moved ? step : 0) + this.childIndex;
 
-    moved && this.props.onChangePage && this.props.onChangePage(pageNumber);
-
     this.state.fling = true;
 
     var nextChildIdx = 0;
@@ -208,6 +206,7 @@ var ViewPager = React.createClass({
         this.setState({
           currentPage: pageNumber,
         });
+		moved && this.props.onChangePage && this.props.onChangePage(pageNumber);
       }
     });
   },
