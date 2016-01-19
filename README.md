@@ -48,11 +48,19 @@ var ViewPager = require('react-native-viewpager');
 <ViewPager
     dataSource={this.state.dataSource}
     renderPage={this._renderPage}
+<<<<<<< HEAD
     transitionFriction={10}
     transitionTension={(vx) => {
       // function receives the gestureState vx property
       return vx*100;
     }}
+=======
+    transitionFriction={(vx) => {
+      // function receives the gestureState vx property
+      return vx*100;
+    }}
+    transitionTension={10}
+>>>>>>> 69de0a4ca565223a1b7c03adf44944cbcdf2e17a
 />
 ```
 
