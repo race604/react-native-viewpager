@@ -236,7 +236,8 @@ var ViewPager = React.createClass({
         render={this.props.renderPage.bind(
           null,
           dataSource.getPageData(pageIdx),
-          pageID
+          pageID,
+          this.state.currentPage
         )}
       />
     );
