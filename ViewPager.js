@@ -38,21 +38,21 @@ var ViewPager = React.createClass({
     isLoop: PropTypes.bool,
     locked: PropTypes.bool,
     autoPlay: PropTypes.bool,
-    animationType: PropTypes.oneOf(['timing', 'spring']),
-    animationProps: PropTypes.object,
+    animation: PropTypes.func,
   },
 
   getDefaultProps() {
     return {
       isLoop: false,
       locked: false,
-      animationType: 'spring',
-      animationProps: [
-        {
-          friction: 10,
-          tension: 50,
-        }
-      ],
+      animation: function(animate, toValue, gs) {
+        return Animated.spring(animate,
+          {
+            toValue: toValue,
+            friction: 10,
+            tension: 50,
+          })
+      },
     }
   },
 
@@ -188,16 +188,7 @@ var ViewPager = React.createClass({
       nextChildIdx = 1;
     }
 
-    // Iterate through animation props and build an object
-    // If any props are functions pass them the gestureState
-    // and store their responses
-    var animationProps = Object.keys(this.props.animationProps).reduce((prev, prop) => {
-      prev[prop] =  (typeof this.props.animationProps[prop] === 'function') ?
-        this.props.animationProps[prop](gs) : this.props.animationProps[prop];
-      return prev;
-    }, { toValue: scrollStep });
-
-    Animated[this.props.animationType](this.state.scrollValue, animationProps)
+    this.props.animation(this.state.scrollValue, scrollStep, gs)
       .start((event) => {
         if (event.finished) {
           this.state.fling = false;
@@ -209,6 +200,8 @@ var ViewPager = React.createClass({
         }
         moved && this.props.onChangePage && this.props.onChangePage(pageNumber);
       });
+
+
   },
 
   renderPageIndicator(props) {
