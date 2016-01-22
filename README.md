@@ -37,10 +37,9 @@ var ViewPager = require('react-native-viewpager');
 * **`onChangePage`**: page change callback,
 * **`renderPageIndicator`**: render custom ViewPager indicator.
 
-## Animated Transition Controls
+## Page Transition Animation Controls
 
-* **`animationType`**: 'spring' or 'timing'
-* **`animationProps`**: `object` that holds the necessary properties for the animationType provided. Each property should be of the type expected by the corresponding [React.Animated method](https://facebook.github.io/react-native/docs/animated.html#methods) or a function that accepts the gestureState of the swipe that initiated the transition and returns the expected value type.
+* **`animation`**: function that returns a React Native Animated configuration.
 
 Example:
 ```
@@ -48,18 +47,21 @@ var ViewPager = require('react-native-viewpager');
 <ViewPager
     dataSource={this.state.dataSource}
     renderPage={this._renderPage}
-    animationType="timing"
-    animationProps = {{
-      duration: (gs) => {
-        // Use the horizontal velocity of the swipe gesture
-        // to affect the length of the transition so the faster you swipe
-        // the faster the pages will transition
-        var velocity = Math.abs(gs.vx);
-        var baseDuration = 300;
-        return (velocity > 1) ? 1/velocity * baseDuration : baseDuration;
-      },
+    animation = {(animatedValue, toValue, gestureState) => {
+    // Use the horizontal velocity of the swipe gesture
+    // to affect the length of the transition so the faster you swipe
+    // the faster the pages will transition
+    var velocity = Math.abs(gestureState.vx);
+    var baseDuration = 300;
+    var duration = (velocity > 1) ? 1/velocity * baseDuration : baseDuration;
+
+    return Animated.timing(animatedValue,
+    {
+      toValue: toValue,
+      duration: duration,
       easing: Easing.out(Easing.exp)
-    }}
+    });
+  }}
 />
 ```
 
