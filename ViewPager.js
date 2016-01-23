@@ -206,7 +206,7 @@ var ViewPager = React.createClass({
         this.setState({
           currentPage: pageNumber,
         });
-		moved && this.props.onChangePage && this.props.onChangePage(pageNumber);
+		moved && this.props.onChangePage && this.props.onChangePage(pageNumber,pageCount);
       }
     });
   },
@@ -215,7 +215,7 @@ var ViewPager = React.createClass({
     if (this.props.renderPageIndicator === false) {
       return null;
     } else if (this.props.renderPageIndicator) {
-      return React.cloneElement(this.props.renderPageIndicator(), props);
+      return React.cloneElement(this.props.renderPageIndicator(props.activePage,props.pageCount), props);
     } else {
       return (
         <View style={styles.indicators}>
