@@ -37,10 +37,9 @@ var ViewPager = require('react-native-viewpager');
 * **`onChangePage`**: page change callback,
 * **`renderPageIndicator`**: render custom ViewPager indicator.
 
-## Animated Transition Controls
+## Page Transition Animation Controls
 
-* **`transitionFriction`**: number or function that returns a number to set custom friction value for animated page transitions.
-* **`transitionTension`**: number or function that returns a number to set custom tension value for animated page transitions.
+* **`animation`**: function that returns a React Native Animated configuration.
 
 Example:
 ```
@@ -48,11 +47,21 @@ var ViewPager = require('react-native-viewpager');
 <ViewPager
     dataSource={this.state.dataSource}
     renderPage={this._renderPage}
-    transitionFriction={10}
-    transitionTension={(vx) => {
-      // function receives the gestureState vx property
-      return vx*100;
-    }}
+    animation = {(animatedValue, toValue, gestureState) => {
+    // Use the horizontal velocity of the swipe gesture
+    // to affect the length of the transition so the faster you swipe
+    // the faster the pages will transition
+    var velocity = Math.abs(gestureState.vx);
+    var baseDuration = 300;
+    var duration = (velocity > 1) ? 1/velocity * baseDuration : baseDuration;
+
+    return Animated.timing(animatedValue,
+    {
+      toValue: toValue,
+      duration: duration,
+      easing: Easing.out(Easing.exp)
+    });
+  }}
 />
 ```
 

@@ -31,29 +31,28 @@ var ViewPager = React.createClass({
     dataSource: PropTypes.instanceOf(ViewPagerDataSource).isRequired,
     renderPage: PropTypes.func.isRequired,
     onChangePage: PropTypes.func,
-    renderPageIndicator: React.PropTypes.oneOfType([
+    renderPageIndicator: PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.bool
     ]),
     isLoop: PropTypes.bool,
     locked: PropTypes.bool,
     autoPlay: PropTypes.bool,
-    transitionFriction: React.PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.number
-    ]),
-    transitionTension: React.PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.number
-    ]),
+    animation: PropTypes.func,
   },
 
   getDefaultProps() {
     return {
       isLoop: false,
       locked: false,
-      transitionFriction: 10,
-      transitionTension: 50,
+      animation: function(animate, toValue, gs) {
+        return Animated.spring(animate,
+          {
+            toValue: toValue,
+            friction: 10,
+            tension: 50,
+          })
+      },
     }
   },
 
@@ -82,7 +81,7 @@ var ViewPager = React.createClass({
 
       this.props.hasTouch && this.props.hasTouch(false);
 
-      this.movePage(step, gestureState.vx);
+      this.movePage(step, gestureState);
     }
 
     this._panResponder = PanResponder.create({
@@ -169,7 +168,7 @@ var ViewPager = React.createClass({
     this.movePage(step);
   },
 
-  movePage(step, vx) {
+  movePage(step, gs) {
     var pageCount = this.props.dataSource.getPageCount();
     var pageNumber = this.state.currentPage + step;
 
@@ -189,26 +188,20 @@ var ViewPager = React.createClass({
       nextChildIdx = 1;
     }
 
-    var friction = (typeof this.props.transitionFriction === 'function') ?
-      this.props.transitionFriction(vx) : this.props.transitionFriction;
-    var tension = (typeof this.props.transitionTension === 'function') ?
-      this.props.transitionTension(vx) : this.props.transitionTension;
+    this.props.animation(this.state.scrollValue, scrollStep, gs)
+      .start((event) => {
+        if (event.finished) {
+          this.state.fling = false;
+          this.childIndex = nextChildIdx;
+          this.state.scrollValue.setValue(nextChildIdx);
+          this.setState({
+            currentPage: pageNumber,
+          });
+        }
+        moved && this.props.onChangePage && this.props.onChangePage(pageNumber);
+      });
 
-    Animated.spring(this.state.scrollValue, {
-      toValue: scrollStep,
-      friction: friction,
-      tension: tension
-    }).start((event) => {
-      if (event.finished) {
-        this.state.fling = false;
-        this.childIndex = nextChildIdx;
-        this.state.scrollValue.setValue(nextChildIdx);
-        this.setState({
-          currentPage: pageNumber,
-        });
-		moved && this.props.onChangePage && this.props.onChangePage(pageNumber);
-      }
-    });
+
   },
 
   renderPageIndicator(props) {
@@ -235,7 +228,8 @@ var ViewPager = React.createClass({
         render={this.props.renderPage.bind(
           null,
           dataSource.getPageData(pageIdx),
-          pageID
+          pageID,
+          this.state.currentPage
         )}
       />
     );
