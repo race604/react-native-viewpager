@@ -41,6 +41,8 @@ var ViewPager = React.createClass({
     animation: PropTypes.func,
   },
 
+  fling: false,
+
   getDefaultProps() {
     return {
       isLoop: false,
@@ -90,7 +92,7 @@ var ViewPager = React.createClass({
         if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
           if (/* (gestureState.moveX <= this.props.edgeHitWidth ||
               gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) && */
-                this.props.locked !== true && !this.state.fling) {
+                this.props.locked !== true && !this.fling) {
             this.props.hasTouch && this.props.hasTouch(true);
             return true;
           }
@@ -181,7 +183,7 @@ var ViewPager = React.createClass({
     var moved = pageNumber !== this.state.currentPage;
     var scrollStep = (moved ? step : 0) + this.childIndex;
 
-    this.state.fling = true;
+    this.fling = true;
 
     var nextChildIdx = 0;
     if (pageNumber > 0 || this.props.isLoop) {
@@ -191,7 +193,7 @@ var ViewPager = React.createClass({
     this.props.animation(this.state.scrollValue, scrollStep, gs)
       .start((event) => {
         if (event.finished) {
-          this.state.fling = false;
+          this.fling = false;
           this.childIndex = nextChildIdx;
           this.state.scrollValue.setValue(nextChildIdx);
           this.setState({
