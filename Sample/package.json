@@ -7,6 +7,6 @@
   },
   "dependencies": {
     "react-native": "^0.17.0",
-    "react-native-viewpager": "^0.1.6"
+    "react-native-viewpager": "^0.2.1"
   }
 }
