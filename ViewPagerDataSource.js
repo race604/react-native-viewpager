@@ -75,7 +75,7 @@ class ViewPagerDataSource {
     var pageID = this.pageIdentities[pageIndex];
     //    warning(pageID !== undefined,
     //      'renderPage called on invalid section: ' + pageID);
-    return this._dataBlob[pageID];
+    return this._getPageData(this._dataBlob,pageID);
   }
 
   /**
