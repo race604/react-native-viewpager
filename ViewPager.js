@@ -87,15 +87,19 @@ var ViewPager = React.createClass({
       this.movePage(step, gestureState);
     }
 
+    var pageCount = this.props.dataSource.getPageCount();
+
     this._panResponder = PanResponder.create({
       // Claim responder if it's a horizontal pan
       onMoveShouldSetPanResponder: (e, gestureState) => {
         if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
-          if (/* (gestureState.moveX <= this.props.edgeHitWidth ||
-              gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) && */
-                this.props.locked !== true && !this.fling) {
-            this.props.hasTouch && this.props.hasTouch(true);
-            return true;
+          if (this.props.locked !== true && !this.fling) {
+            // prevent swiping left of first page, and right of last page
+            if (!(gestureState.dx > 0 && this.getCurrentPage() == 0) &&
+                !(gestureState.dx < 0 && this.getCurrentPage() == pageCount - 1)) {
+              this.props.hasTouch && this.props.hasTouch(true);
+              return true;
+            }
           }
         }
       },
