@@ -67,6 +67,11 @@ var ViewPager = React.createClass({
   },
 
   componentWillMount() {
+    if(this.props.initialPage){
+      this.setState({
+        currentPage: Number(this.props.initialPage)+1,
+      })
+    }
     this.childIndex = 0;
 
     var release = (e, gestureState) => {
