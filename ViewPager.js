@@ -39,6 +39,7 @@ var ViewPager = React.createClass({
     locked: PropTypes.bool,
     autoPlay: PropTypes.bool,
     animation: PropTypes.func,
+    pageIndicatorStyle: View.propTypes.style,
   },
 
   fling: false,
@@ -55,6 +56,7 @@ var ViewPager = React.createClass({
             tension: 50,
           })
       },
+      pageIndicatorStyle: null,
     }
   },
 
@@ -215,7 +217,7 @@ var ViewPager = React.createClass({
       return React.cloneElement(this.props.renderPageIndicator(), props);
     } else {
       return (
-        <View style={styles.indicators}>
+        <View style={[styles.indicators, this.props.pageIndicatorStyle]}>
           <DefaultViewPageIndicator {...props} />
         </View>
       );
