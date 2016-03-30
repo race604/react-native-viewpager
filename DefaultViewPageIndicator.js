@@ -12,7 +12,7 @@ var {
 
 var deviceWidth = Dimensions.get('window').width;
 var DOT_SIZE = 6;
-var DOT_SAPCE = 3;
+var DOT_SAPCE = 4;
 
 var styles = StyleSheet.create({
   tab: {
@@ -29,7 +29,7 @@ var styles = StyleSheet.create({
     width: DOT_SIZE,
     height: DOT_SIZE,
     borderRadius: DOT_SIZE / 2,
-    backgroundColor: '#80ACD0',
+    backgroundColor: '#E0E1E2',
     marginLeft: DOT_SAPCE,
     marginRight: DOT_SAPCE,
   },
@@ -39,7 +39,7 @@ var styles = StyleSheet.create({
     width: DOT_SIZE,
     height: DOT_SIZE,
     borderRadius: DOT_SIZE / 2,
-    backgroundColor: '#E0E1E2',
+    backgroundColor: '#80ACD0',
     margin: DOT_SAPCE,
     bottom: 0,
   },
