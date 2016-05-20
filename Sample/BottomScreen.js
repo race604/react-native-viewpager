@@ -12,8 +12,8 @@ var {
   AlertIOS,
 } = React;
 
-var ViewPager = require('react-native-viewpager');
-//var ViewPager = require('./ViewPager');
+// var ViewPager = require('react-native-viewpager');
+var ViewPager = require('./ViewPager');
 var deviceWidth = Dimensions.get('window').width;
 
 var PAGES = [
