@@ -19,6 +19,9 @@ var DefaultViewPageIndicator = require('./DefaultViewPageIndicator');
 var deviceWidth = Dimensions.get('window').width;
 var ViewPagerDataSource = require('./ViewPagerDataSource');
 
+// If there is no set default interval set default to 5 seconds
+var autoPlayInterval = 5000;
+
 var ViewPager = React.createClass({
   mixins: [TimerMixin],
 
@@ -38,6 +41,7 @@ var ViewPager = React.createClass({
     isLoop: PropTypes.bool,
     locked: PropTypes.bool,
     autoPlay: PropTypes.bool,
+    autoPlayInterval: PropTypes.number,
     animation: PropTypes.func,
   },
 
@@ -47,6 +51,7 @@ var ViewPager = React.createClass({
     return {
       isLoop: false,
       locked: false,
+      autoPlayInterval: 5000,
       animation: function(animate, toValue, gs) {
         return Animated.spring(animate,
           {
@@ -153,7 +158,7 @@ var ViewPager = React.createClass({
     if (!this._autoPlayer) {
       this._autoPlayer = this.setInterval(
         () => {this.movePage(1);},
-        5000
+        this.props.autoPlayInterval
       );
     }
   },

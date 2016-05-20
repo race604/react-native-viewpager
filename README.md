@@ -32,6 +32,7 @@ var ViewPager = require('react-native-viewpager');
 * **`dataSource`**: this is require to provide pages data,
 * **`renderPage`**: this is require to render page view,
 * **`autoPlay`**: `true` to turn page automatically,
+* **`autoPlayInterval`**: number in milliseconds to set how fast the pages autoPlay,
 * **`isLoop`**: `true` to run in infinite scroll mode,
 * **`locked`**: `true` to disable touch scroll,
 * **`onChangePage`**: page change callback,
