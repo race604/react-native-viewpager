@@ -10,8 +10,8 @@ import {
   Image,
 } from 'react-native';
 
-// var ViewPager = require('react-native-viewpager');
-var ViewPager = require('./ViewPager');
+var ViewPager = require('react-native-viewpager');
+// var ViewPager = require('./ViewPager');
 var deviceWidth = Dimensions.get('window').width;
 
 var IMGS = [
