@@ -1,27 +1,27 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import React, { Component } from 'react';
+import {
   AppRegistry,
   StyleSheet,
   View,
-} = React;
+} from 'react-native';
 
 var TopScreen = require('./TopScreen');
 var BottomScreen = require('./BottomScreen');
 
-var MainScreen = React.createClass({
+class MainScreen extends Component {
 
-  render: function() {
+  render(){
     return (
       <View style={styles.container}>
         <TopScreen style={styles.viewpager}/>
         <BottomScreen style={styles.viewpager}/>
       </View>
     );
-  },
+  }
 
-});
+}
 
 var styles = StyleSheet.create({
   container: {

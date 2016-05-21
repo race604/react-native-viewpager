@@ -1,17 +1,17 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import React, { Component } from 'react';
+import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
   Dimensions,
   Image,
-} = React;
+} from 'react-native';
 
 var ViewPager = require('react-native-viewpager');
-//var ViewPager = require('./ViewPager');
+// var ViewPager = require('./ViewPager');
 var deviceWidth = Dimensions.get('window').width;
 
 var IMGS = [
@@ -24,18 +24,19 @@ var IMGS = [
   'https://images.unsplash.com/photo-1440847899694-90043f91c7f9?h=1024'
 ];
 
-var TopScreen = React.createClass({
-  getInitialState: function() {
-    var dataSource = new ViewPager.DataSource({
-      pageHasChanged: (p1, p2) => p1 !== p2,
-    });
+class TopScreen extends Component{
+  constructor(props) {
+        super(props)
+        var dataSource = new ViewPager.DataSource({
+            pageHasChanged: (p1, p2) => p1 !== p2,
+        });
 
-    return {
-      dataSource: dataSource.cloneWithPages(IMGS),
-    };
-  },
+        this.state = {
+            dataSource: dataSource.cloneWithPages(IMGS)
+        }
+    }
 
-  render: function() {
+  render() {
     return (
       <ViewPager
         style={this.props.style}
@@ -44,9 +45,9 @@ var TopScreen = React.createClass({
         isLoop={true}
         autoPlay={true}/>
     );
-  },
+  }
 
-  _renderPage: function(
+  _renderPage(
     data: Object,
     pageID: number | string,) {
     return (
@@ -54,8 +55,8 @@ var TopScreen = React.createClass({
         source={{uri: data}}
         style={styles.page} />
     );
-  },
-});
+  }
+}
 
 var styles = StyleSheet.create({
   page: {
