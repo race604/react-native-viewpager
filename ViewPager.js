@@ -145,6 +145,7 @@ var ViewPager = React.createClass({
       }
 
       this.childIndex = Math.min(this.childIndex, constrainedPage);
+      this.fling = false;
     }
 
   },
