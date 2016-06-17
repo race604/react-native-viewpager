@@ -1,6 +1,6 @@
 {
   "name": "react-native-viewpager",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "ViewPager componnent for React Native",
   "main": "ViewPager.js",
   "scripts": {
