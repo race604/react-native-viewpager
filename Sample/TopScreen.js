@@ -1,16 +1,16 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import React from 'react';
+import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
   Dimensions,
   Image,
-} = React;
+} from 'react-native';
 
-var ViewPager = require('react-native-viewpager');
+import ViewPager from 'react-native-viewpager';
 //var ViewPager = require('./ViewPager');
 var deviceWidth = Dimensions.get('window').width;
 
