@@ -36,6 +36,7 @@ var ViewPager = require('react-native-viewpager');
 * **`locked`**: `true` to disable touch scroll,
 * **`onChangePage`**: page change callback,
 * **`renderPageIndicator`**: render custom ViewPager indicator.
+* **`initialPage`**: show initially some other page than first page.
 
 ## Page Transition Animation Controls
 
