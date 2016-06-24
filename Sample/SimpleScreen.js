@@ -25,6 +25,8 @@ var IMGS = [
   'https://images.unsplash.com/photo-1440847899694-90043f91c7f9?h=1024'
 ];
 
+var count = 0;
+
 var SimpleScreen = React.createClass({
   getInitialState: function() {
     var dataSource = new ViewPager.DataSource({
@@ -33,6 +35,7 @@ var SimpleScreen = React.createClass({
 
     return {
       dataSource: dataSource.cloneWithPages(IMGS),
+      page: 0
     };
   },
 
@@ -48,7 +51,8 @@ var SimpleScreen = React.createClass({
           autoPlay={false}/>
 
         <TouchableHighlight style={styles.button} onPress={() => {
-            this.viewpager.goToPage(2);
+            this.viewpager.goToPage(count + 1);
+            count = count + 1;
           }}>
           <Text>Click</Text>
         </TouchableHighlight>
