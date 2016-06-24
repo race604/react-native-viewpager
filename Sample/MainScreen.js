@@ -1,11 +1,11 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import React from 'react';
+import {
   AppRegistry,
   StyleSheet,
   View,
-} = React;
+} from 'react-native';
 
 var TopScreen = require('./TopScreen');
 var BottomScreen = require('./BottomScreen');

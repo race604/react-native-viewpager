@@ -1,7 +1,7 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import React from 'react';
+import {
   AppRegistry,
   StyleSheet,
   Text,
@@ -10,7 +10,7 @@ var {
   ToastAndroid,
   Platform,
   AlertIOS,
-} = React;
+} from 'react-native';
 
 var ViewPager = require('react-native-viewpager');
 //var ViewPager = require('./ViewPager');
