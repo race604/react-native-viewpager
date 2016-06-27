@@ -207,7 +207,7 @@ var ViewPager = React.createClass({
       });
     };
 
-    if (animated) {
+    if (animate) {
       this.fling = true;
       this.props.animation(this.state.scrollValue, scrollStep, gs)
         .start((event) => {
