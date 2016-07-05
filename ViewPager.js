@@ -301,7 +301,7 @@ var ViewPager = React.createClass({
     });
 
     return (
-      <View style={{flex: 1}}
+      <View style={styles.container}
         onLayout={(event) => {
             // console.log('ViewPager.onLayout()');
             var viewWidth = event.nativeEvent.layout.width;
@@ -332,6 +332,10 @@ var ViewPager = React.createClass({
 });
 
 var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    overflow: 'hidden',
+  },
   indicators: {
     flex: 1,
     alignItems: 'center',
