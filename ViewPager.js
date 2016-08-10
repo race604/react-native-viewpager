@@ -39,6 +39,7 @@ var ViewPager = React.createClass({
       PropTypes.bool
     ]),
     type: PropTypes.string,
+    indicatorsStyle: PropTypes.any,
     isLoop: PropTypes.bool,
     locked: PropTypes.bool,
     autoPlay: PropTypes.bool,
@@ -252,13 +253,14 @@ var ViewPager = React.createClass({
   },
 
   renderPageIndicator(props) {
+    const {indicatorsStyle} = this.props;
     if (this.props.renderPageIndicator === false) {
       return null;
     } else if (this.props.renderPageIndicator) {
       return React.cloneElement(this.props.renderPageIndicator(), props);
     } else {
       return (
-        <View style={styles.indicators}>
+        <View style={indicatorsStyle ? indicatorsStyle :styles.indicators}>
           <DefaultViewPageIndicator {...props} />
         </View>
       );
