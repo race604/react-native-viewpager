@@ -40,6 +40,7 @@ var ViewPager = React.createClass({
     ]),
     type: PropTypes.string,
     indicatorsStyle: PropTypes.any,
+    containerViewStyle: PropTypes.any,
     isLoop: PropTypes.bool,
     locked: PropTypes.bool,
     autoPlay: PropTypes.bool,
@@ -342,7 +343,7 @@ var ViewPager = React.createClass({
       inputRange: [0, 1], outputRange: [0, -deviceHeight] //TODO: should be view Height
     });
     return (
-      <View style={{flex: 1}}
+      <View style={this.props.containerViewStyle ? this.props.containerViewStyle : {flex:1}}
         onLayout={(event) => {
             // console.log('ViewPager.onLayout()');
             var viewWidth = event.nativeEvent.layout.width;
