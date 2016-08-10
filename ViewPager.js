@@ -96,12 +96,23 @@ var ViewPager = React.createClass({
     this._panResponder = PanResponder.create({
       // Claim responder if it's a horizontal pan
       onMoveShouldSetPanResponder: (e, gestureState) => {
-        if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
-          if (/* (gestureState.moveX <= this.props.edgeHitWidth ||
-              gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) && */
-                this.props.locked !== true && !this.fling) {
-            this.props.hasTouch && this.props.hasTouch(true);
-            return true;
+
+        if(this.props.type === 'horizontal') {
+          if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
+            if (/* (gestureState.moveX <= this.props.edgeHitWidth ||
+               gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) && */
+            this.props.locked !== true && !this.fling) {
+              this.props.hasTouch && this.props.hasTouch(true);
+              return true;
+            }
+          }
+        }else {
+          if (Math.abs(gestureState.dy) > Math.abs(gestureState.dx)) {
+            if (
+            this.props.locked !== true && !this.fling) {
+              this.props.hasTouch && this.props.hasTouch(true);
+              return true;
+            }
           }
         }
       },
@@ -112,9 +123,15 @@ var ViewPager = React.createClass({
 
       // Dragging, move the view with the touch
       onPanResponderMove: (e, gestureState) => {
-        var dx = gestureState.dx;
-        var offsetX = -dx / this.state.viewWidth + this.childIndex;
-        this.state.scrollValue.setValue(offsetX);
+        if(this.props.type === 'horizontal') {
+          var dx = gestureState.dx;
+          var offsetX = -dx / this.state.viewWidth + this.childIndex;
+          this.state.scrollValue.setValue(offsetX);
+        }else {
+          var dy = gestureState.dy;
+          var offsetY = -dy / this.state.viewHeight + this.childIndex;
+          this.state.scrollValue.setValue(offsetY);
+        }
       },
     });
 
@@ -293,13 +310,13 @@ var ViewPager = React.createClass({
     }
 
     var sceneContainerStyle = {
-      width: viewWidth * pagesNum,
+      width: deviceWidth,
       flex: 1,
       flexDirection: 'row'
     };
 
     var sceneContainerStyleColumn = {
-      width: viewWidth * pagesNum,
+      width: deviceWidth,
       flex: 1,
       flexDirection: 'column'
     };
@@ -318,12 +335,14 @@ var ViewPager = React.createClass({
         onLayout={(event) => {
             // console.log('ViewPager.onLayout()');
             var viewWidth = event.nativeEvent.layout.width;
-            if (!viewWidth || this.state.viewWidth === viewWidth) {
+            var viewHeight = event.nativeEvent.layout.height;
+            if (!viewWidth || (this.state.viewWidth === viewWidth && this.state.viewHeight === viewHeight) ) {
               return;
             }
             this.setState({
               currentPage: this.state.currentPage,
               viewWidth: viewWidth,
+              viewHeight: viewHeight
             });
           }}
         >
