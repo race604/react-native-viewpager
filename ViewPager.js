@@ -19,6 +19,7 @@ var TimerMixin = require('react-timer-mixin');
 
 var DefaultViewPageIndicator = require('./DefaultViewPageIndicator');
 var deviceWidth = Dimensions.get('window').width;
+var deviceHeight = Dimensions.get('window').height;
 var ViewPagerDataSource = require('./ViewPagerDataSource');
 
 var ViewPager = React.createClass({
@@ -37,6 +38,7 @@ var ViewPager = React.createClass({
       PropTypes.func,
       PropTypes.bool
     ]),
+    type: ProPropTypes.string,
     isLoop: PropTypes.bool,
     locked: PropTypes.bool,
     autoPlay: PropTypes.bool,
@@ -50,6 +52,7 @@ var ViewPager = React.createClass({
     return {
       isLoop: false,
       locked: false,
+      type: 'horizontal',
       animation: function(animate, toValue, gs) {
         return Animated.spring(animate,
           {
@@ -65,6 +68,7 @@ var ViewPager = React.createClass({
     return {
       currentPage: 0,
       viewWidth: 0,
+      viewHeight: 0,
       scrollValue: new Animated.Value(0)
     };
   },
@@ -291,7 +295,7 @@ var ViewPager = React.createClass({
     var sceneContainerStyle = {
       width: viewWidth * pagesNum,
       flex: 1,
-      flexDirection: 'row'
+      flexDirection: {this.props.type==="horizontal" ? 'row' : 'column'}
     };
 
     // this.childIndex = hasLeft ? 1 : 0;
@@ -300,6 +304,10 @@ var ViewPager = React.createClass({
       inputRange: [0, 1], outputRange: [0, -viewWidth]
     });
 
+    var translateY = this.state.scrollValue.interpolate({
+      inputRange: [0, 1], outputRange: [0, -deviceHeight] //TODO: should be view Height
+    });
+    const viewTransform = (this.props.type ==='horizontal') ? translateX  : translateY;
     return (
       <View style={{flex: 1}}
         onLayout={(event) => {
@@ -315,7 +323,9 @@ var ViewPager = React.createClass({
           }}
         >
 
-        <Animated.View style={[sceneContainerStyle, {transform: [{translateX}]}]}
+        const viewTransfrom = (this.props.type ===)
+
+        <Animated.View style={[sceneContainerStyle, {transform: [{viewTransform}]}]}
           {...this._panResponder.panHandlers}>
           {bodyComponents}
         </Animated.View>
