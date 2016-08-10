@@ -38,7 +38,7 @@ var ViewPager = React.createClass({
       PropTypes.func,
       PropTypes.bool
     ]),
-    type: ProPropTypes.string,
+    type: PropTypes.string,
     isLoop: PropTypes.bool,
     locked: PropTypes.bool,
     autoPlay: PropTypes.bool,
@@ -295,7 +295,13 @@ var ViewPager = React.createClass({
     var sceneContainerStyle = {
       width: viewWidth * pagesNum,
       flex: 1,
-      flexDirection: {this.props.type==="horizontal" ? 'row' : 'column'}
+      flexDirection: 'row'
+    };
+
+    var sceneContainerStyleColumn = {
+      width: viewWidth * pagesNum,
+      flex: 1,
+      flexDirection: 'column'
     };
 
     // this.childIndex = hasLeft ? 1 : 0;
@@ -307,7 +313,6 @@ var ViewPager = React.createClass({
     var translateY = this.state.scrollValue.interpolate({
       inputRange: [0, 1], outputRange: [0, -deviceHeight] //TODO: should be view Height
     });
-    const viewTransform = (this.props.type ==='horizontal') ? translateX  : translateY;
     return (
       <View style={{flex: 1}}
         onLayout={(event) => {
@@ -322,13 +327,16 @@ var ViewPager = React.createClass({
             });
           }}
         >
-
-        const viewTransfrom = (this.props.type ===)
-
-        <Animated.View style={[sceneContainerStyle, {transform: [{viewTransform}]}]}
+        {this.props.type === 'horizontal' ?
+        <Animated.View style={[sceneContainerStyle, {transform: [{translateX}]}]}
           {...this._panResponder.panHandlers}>
           {bodyComponents}
         </Animated.View>
+         :        <Animated.View style={[sceneContainerStyleColumn, {transform: [{translateY}]}]}
+          {...this._panResponder.panHandlers}>
+          {bodyComponents}
+        </Animated.View>
+        }
 
         {this.renderPageIndicator({goToPage: this.goToPage,
                             pageCount: pageIDs.length,
