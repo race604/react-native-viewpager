@@ -77,19 +77,28 @@ var ViewPager = React.createClass({
     this.childIndex = 0;
 
     var release = (e, gestureState) => {
-      var relativeGestureDistance = gestureState.dx / deviceWidth,
-          //lastPageIndex = this.props.children.length - 1,
-          vx = gestureState.vx;
-
-      var step = 0;
-      if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= -1e-6)) {
-        step = 1;
-      } else if (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vx >= 1e-6)) {
-        step = -1;
+      var relativeGestureDistance = 0, step = 0, vy= 0, vx=0;
+      if(this.props.type === 'horizontal') {
+        relativeGestureDistance = gestureState.dx / deviceWidth;
+        vx = gestureState.vx;
+        step = 0;
+        if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= -1e-6)) {
+          step = 1;
+        } else if (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vx >= 1e-6)) {
+          step = -1;
+        }
+      }else {
+        relativeGestureDistance = gestureState.dy / deviceHeight;
+        vy = gestureState.vy;
+        step = 0;
+        if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vy <= -1e-6)) {
+          step = 1;
+        } else if (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vy >= 1e-6)) {
+          step = -1;
+        }
       }
 
       this.props.hasTouch && this.props.hasTouch(false);
-
       this.movePage(step, gestureState);
     }
 
