@@ -46,6 +46,7 @@ var ViewPager = React.createClass({
     autoPlay: PropTypes.bool,
     animation: PropTypes.func,
     initialPage: PropTypes.number,
+    pagerHeight: PropTypes.number
   },
 
   fling: false,
@@ -55,6 +56,7 @@ var ViewPager = React.createClass({
       isLoop: false,
       locked: false,
       type: 'horizontal',
+      pagerHeight: deviceHeight,
       animation: function(animate, toValue, gs) {
         return Animated.spring(animate,
           {
@@ -90,7 +92,7 @@ var ViewPager = React.createClass({
           step = -1;
         }
       }else {
-        relativeGestureDistance = gestureState.dy / deviceHeight;
+        relativeGestureDistance = gestureState.dy / this.props.pagerHeight;
         vy = gestureState.vy;
         step = 0;
         if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vy <= -1e-6)) {
@@ -340,7 +342,7 @@ var ViewPager = React.createClass({
     });
 
     var translateY = this.state.scrollValue.interpolate({
-      inputRange: [0, 1], outputRange: [0, -deviceHeight] //TODO: should be view Height
+      inputRange: [0, 1], outputRange: [0, - this.props.pagerHeight] //TODO: should be view Height
     });
     return (
       <View style={this.props.containerViewStyle ? this.props.containerViewStyle : {flex:1}}
