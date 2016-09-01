@@ -46,7 +46,8 @@ var ViewPager = React.createClass({
     autoPlay: PropTypes.bool,
     animation: PropTypes.func,
     initialPage: PropTypes.number,
-    pagerHeight: PropTypes.number
+    pagerHeight: PropTypes.number,
+    gestureDistanceThreshold: PropTypes.number
   },
 
   fling: false,
@@ -56,6 +57,7 @@ var ViewPager = React.createClass({
       isLoop: false,
       locked: false,
       type: 'horizontal',
+      gestureDistanceThreshold: 0.5,
       pagerHeight: deviceHeight,
       animation: function(animate, toValue, gs) {
         return Animated.spring(animate,
@@ -82,22 +84,23 @@ var ViewPager = React.createClass({
 
     var release = (e, gestureState) => {
       var relativeGestureDistance = 0, step = 0, vy= 0, vx=0;
+      const {gestureDistanceThreshold} = this.props;
       if(this.props.type === 'horizontal') {
         relativeGestureDistance = gestureState.dx / deviceWidth;
         vx = gestureState.vx;
         step = 0;
-        if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= -1e-6)) {
+        if (relativeGestureDistance < -gestureDistanceThreshold || (relativeGestureDistance < 0 && vx <= -1e-6)) {
           step = 1;
-        } else if (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vx >= 1e-6)) {
+        } else if (relativeGestureDistance > gestureDistanceThreshold || (relativeGestureDistance > 0 && vx >= 1e-6)) {
           step = -1;
         }
       }else {
         relativeGestureDistance = gestureState.dy / this.props.pagerHeight;
         vy = gestureState.vy;
         step = 0;
-        if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vy <= -1e-6)) {
+        if (relativeGestureDistance < -gestureDistanceThreshold || (relativeGestureDistance < 0 && vy <= -1e-6)) {
           step = 1;
-        } else if (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vy >= 1e-6)) {
+        } else if (relativeGestureDistance > gestureDistanceThreshold || (relativeGestureDistance > 0 && vy >= 1e-6)) {
           step = -1;
         }
       }
