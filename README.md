@@ -38,6 +38,7 @@ var ViewPager = require('react-native-viewpager');
 * **`onChangePage`**: page change callback,
 * **`renderPageIndicator`**: render custom ViewPager indicator.
 * **`initialPage`**: show initially some other page than first page.
+* **`selectedPage`**: allow parent component to change page of pager.
 
 ## Page Transition Animation Controls
 
