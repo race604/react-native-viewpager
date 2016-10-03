@@ -37,6 +37,7 @@ var ViewPager = React.createClass({
       PropTypes.func,
       PropTypes.bool
     ]),
+    selectedPage:PropTypes.number,
     isLoop: PropTypes.bool,
     locked: PropTypes.bool,
     autoPlay: PropTypes.bool,
@@ -141,20 +142,25 @@ var ViewPager = React.createClass({
         this._autoPlayer = null;
       }
     }
-
+    var controledPageChanged = Boolean(nextProps.selectedPage && nextProps.selectedPage !== this.state.currentPage);
     if (nextProps.dataSource) {
       var maxPage = nextProps.dataSource.getPageCount() - 1;
-      var constrainedPage = Math.max(0, Math.min(this.state.currentPage, maxPage));
-      this.setState({
-        currentPage: constrainedPage,
-      });
-
+      var constrainedPage = Math.max(0, Math.min(controledPageChanged ? nextProps.selectedPage : this.state.currentPage, maxPage));
+      
       if (!nextProps.isLoop) {
         this.state.scrollValue.setValue(constrainedPage > 0 ? 1 : 0);
       }
 
       this.childIndex = Math.min(this.childIndex, constrainedPage);
       this.fling = false;
+      
+      if (controledPageChanged) {
+        this.goToPage( nextProps.selectedPage );
+      } else {
+        this.setState({
+          currentPage: constrainedPage,
+        });
+      }
     }
 
   },
