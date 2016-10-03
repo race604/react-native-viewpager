@@ -49,6 +49,8 @@ var ViewPager = require('react-native-viewpager');
 <ViewPager
     dataSource={this.state.dataSource}
     renderPage={this._renderPage}
+    selectedPage={this.state.currentPage}
+    onChangePage={(page)=>this.setState({currentPage:page})} //sync parent state with component state;
     animation = {(animatedValue, toValue, gestureState) => {
     // Use the horizontal velocity of the swipe gesture
     // to affect the length of the transition so the faster you swipe
