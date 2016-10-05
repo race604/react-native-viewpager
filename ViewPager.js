@@ -42,6 +42,7 @@ var ViewPager = React.createClass({
     autoPlay: PropTypes.bool,
     animation: PropTypes.func,
     initialPage: PropTypes.number,
+    allowMove: PropTypes.func,
   },
 
   fling: false,
@@ -93,9 +94,11 @@ var ViewPager = React.createClass({
       // Claim responder if it's a horizontal pan
       onMoveShouldSetPanResponder: (e, gestureState) => {
         if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
+          var allowMove = true;
+          if ( this.props.allowMove ) { allowMove = this.props.allowMove(e, gestureState) }
           if (/* (gestureState.moveX <= this.props.edgeHitWidth ||
               gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) && */
-                this.props.locked !== true && !this.fling) {
+                this.props.locked !== true && !this.fling && allowMove) {
             this.props.hasTouch && this.props.hasTouch(true);
             return true;
           }
