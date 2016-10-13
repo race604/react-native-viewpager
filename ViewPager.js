@@ -184,7 +184,7 @@ var ViewPager = React.createClass({
     var pageCount = this.props.dataSource.getPageCount();
     var pageNumber = this.state.currentPage + step;
     if (this.props.isLoop) {
-      pageNumber = (pageNumber + pageCount) % pageCount;
+      pageNumber = pageCount == 0 ? pageNumber = 0 : ((pageNumber + pageCount) % pageCount);
     } else {
       pageNumber = Math.min(Math.max(0, pageNumber), pageCount - 1);
     }
