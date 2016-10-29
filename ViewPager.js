@@ -153,7 +153,7 @@ var ViewPager = React.createClass({
         this.state.scrollValue.setValue(constrainedPage > 0 ? 1 : 0);
       }
 
-      this.childIndex = Math.min(this.childIndex, constrainedPage);
+//       this.childIndex = Math.min(this.childIndex, constrainedPage);
       this.fling = false;
     }
 
