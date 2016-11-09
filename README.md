@@ -39,6 +39,15 @@ var ViewPager = require('react-native-viewpager');
 * **`renderPageIndicator`**: render custom ViewPager indicator.
 * **`initialPage`**: show initially some other page than first page.
 
+
+##  New configuration props
+* **`type`**: `horizontal` type of scrolling. options are `horizontal` and `vertical`.
+* **`indicatorsStyle`**: To set custom style on Indicators.
+* **`containerViewStyle`**: To set custom style on containerView.
+* **`pagerHeight`**: To set Height of pages. default is equal to screen height of device.
+* **`gestureDistanceThreshold`**: to set distance of gesture, default is `0.5`.
+
+
 ## Page Transition Animation Controls
 
 * **`animation`**: function that returns a React Native Animated configuration.

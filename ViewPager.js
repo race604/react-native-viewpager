@@ -19,6 +19,7 @@ var TimerMixin = require('react-timer-mixin');
 
 var DefaultViewPageIndicator = require('./DefaultViewPageIndicator');
 var deviceWidth = Dimensions.get('window').width;
+var deviceHeight = Dimensions.get('window').height;
 var ViewPagerDataSource = require('./ViewPagerDataSource');
 
 var ViewPager = React.createClass({
@@ -37,11 +38,16 @@ var ViewPager = React.createClass({
       PropTypes.func,
       PropTypes.bool
     ]),
+    type: PropTypes.string,
+    indicatorsStyle: PropTypes.any,
+    containerViewStyle: PropTypes.any,
     isLoop: PropTypes.bool,
     locked: PropTypes.bool,
     autoPlay: PropTypes.bool,
     animation: PropTypes.func,
     initialPage: PropTypes.number,
+    pagerHeight: PropTypes.number,
+    gestureDistanceThreshold: PropTypes.number
   },
 
   fling: false,
@@ -50,6 +56,9 @@ var ViewPager = React.createClass({
     return {
       isLoop: false,
       locked: false,
+      type: 'horizontal',
+      gestureDistanceThreshold: 0.5,
+      pagerHeight: deviceHeight,
       animation: function(animate, toValue, gs) {
         return Animated.spring(animate,
           {
@@ -65,6 +74,7 @@ var ViewPager = React.createClass({
     return {
       currentPage: 0,
       viewWidth: 0,
+      viewHeight: 0,
       scrollValue: new Animated.Value(0)
     };
   },
@@ -73,31 +83,52 @@ var ViewPager = React.createClass({
     this.childIndex = 0;
 
     var release = (e, gestureState) => {
-      var relativeGestureDistance = gestureState.dx / deviceWidth,
-          //lastPageIndex = this.props.children.length - 1,
-          vx = gestureState.vx;
-
-      var step = 0;
-      if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= -1e-6)) {
-        step = 1;
-      } else if (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vx >= 1e-6)) {
-        step = -1;
+      var relativeGestureDistance = 0, step = 0, vy= 0, vx=0;
+      const {gestureDistanceThreshold} = this.props;
+      if(this.props.type === 'horizontal') {
+        relativeGestureDistance = gestureState.dx / deviceWidth;
+        vx = gestureState.vx;
+        step = 0;
+        if (relativeGestureDistance < -gestureDistanceThreshold || (relativeGestureDistance < 0 && vx <= -1e-6)) {
+          step = 1;
+        } else if (relativeGestureDistance > gestureDistanceThreshold || (relativeGestureDistance > 0 && vx >= 1e-6)) {
+          step = -1;
+        }
+      }else {
+        relativeGestureDistance = gestureState.dy / this.props.pagerHeight;
+        vy = gestureState.vy;
+        step = 0;
+        if (relativeGestureDistance < -gestureDistanceThreshold || (relativeGestureDistance < 0 && vy <= -1e-6)) {
+          step = 1;
+        } else if (relativeGestureDistance > gestureDistanceThreshold || (relativeGestureDistance > 0 && vy >= 1e-6)) {
+          step = -1;
+        }
       }
 
       this.props.hasTouch && this.props.hasTouch(false);
-
       this.movePage(step, gestureState);
     }
 
     this._panResponder = PanResponder.create({
       // Claim responder if it's a horizontal pan
       onMoveShouldSetPanResponder: (e, gestureState) => {
-        if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
-          if (/* (gestureState.moveX <= this.props.edgeHitWidth ||
-              gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) && */
-                this.props.locked !== true && !this.fling) {
-            this.props.hasTouch && this.props.hasTouch(true);
-            return true;
+
+        if(this.props.type === 'horizontal') {
+          if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
+            if (/* (gestureState.moveX <= this.props.edgeHitWidth ||
+               gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) && */
+            this.props.locked !== true && !this.fling) {
+              this.props.hasTouch && this.props.hasTouch(true);
+              return true;
+            }
+          }
+        }else {
+          if (Math.abs(gestureState.dy) > Math.abs(gestureState.dx)) {
+            if (
+            this.props.locked !== true && !this.fling) {
+              this.props.hasTouch && this.props.hasTouch(true);
+              return true;
+            }
           }
         }
       },
@@ -108,9 +139,15 @@ var ViewPager = React.createClass({
 
       // Dragging, move the view with the touch
       onPanResponderMove: (e, gestureState) => {
-        var dx = gestureState.dx;
-        var offsetX = -dx / this.state.viewWidth + this.childIndex;
-        this.state.scrollValue.setValue(offsetX);
+        if(this.props.type === 'horizontal') {
+          var dx = gestureState.dx;
+          var offsetX = -dx / this.state.viewWidth + this.childIndex;
+          this.state.scrollValue.setValue(offsetX);
+        }else {
+          var dy = gestureState.dy;
+          var offsetY = -dy / this.state.viewHeight + this.childIndex;
+          this.state.scrollValue.setValue(offsetY);
+        }
       },
     });
 
@@ -222,13 +259,14 @@ var ViewPager = React.createClass({
   },
 
   renderPageIndicator(props) {
+    const {indicatorsStyle} = this.props;
     if (this.props.renderPageIndicator === false) {
       return null;
     } else if (this.props.renderPageIndicator) {
       return React.cloneElement(this.props.renderPageIndicator(), props);
     } else {
       return (
-        <View style={styles.indicators}>
+        <View style={indicatorsStyle ? indicatorsStyle :styles.indicators}>
           <DefaultViewPageIndicator {...props} />
         </View>
       );
@@ -289,9 +327,15 @@ var ViewPager = React.createClass({
     }
 
     var sceneContainerStyle = {
-      width: viewWidth * pagesNum,
+      width: deviceWidth*pagesNum,
       flex: 1,
       flexDirection: 'row'
+    };
+
+    var sceneContainerStyleColumn = {
+      width: deviceWidth,
+      flex: 1,
+      flexDirection: 'column'
     };
 
     // this.childIndex = hasLeft ? 1 : 0;
@@ -300,25 +344,35 @@ var ViewPager = React.createClass({
       inputRange: [0, 1], outputRange: [0, -viewWidth]
     });
 
+    var translateY = this.state.scrollValue.interpolate({
+      inputRange: [0, 1], outputRange: [0, - this.props.pagerHeight] //TODO: should be view Height
+    });
     return (
-      <View style={{flex: 1}}
+      <View style={this.props.containerViewStyle ? this.props.containerViewStyle : {flex:1}}
         onLayout={(event) => {
             // console.log('ViewPager.onLayout()');
             var viewWidth = event.nativeEvent.layout.width;
-            if (!viewWidth || this.state.viewWidth === viewWidth) {
+            var viewHeight = event.nativeEvent.layout.height;
+            if (!viewWidth || (this.state.viewWidth === viewWidth && this.state.viewHeight === viewHeight) ) {
               return;
             }
             this.setState({
               currentPage: this.state.currentPage,
               viewWidth: viewWidth,
+              viewHeight: viewHeight
             });
           }}
         >
-
+        {this.props.type === 'horizontal' ?
         <Animated.View style={[sceneContainerStyle, {transform: [{translateX}]}]}
           {...this._panResponder.panHandlers}>
           {bodyComponents}
         </Animated.View>
+         :        <Animated.View style={[sceneContainerStyleColumn, {transform: [{translateY}]}]}
+          {...this._panResponder.panHandlers}>
+          {bodyComponents}
+        </Animated.View>
+        }
 
         {this.renderPageIndicator({goToPage: this.goToPage,
                             pageCount: pageIDs.length,
