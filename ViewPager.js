@@ -42,6 +42,7 @@ var ViewPager = React.createClass({
     autoPlay: PropTypes.bool,
     animation: PropTypes.func,
     initialPage: PropTypes.number,
+    itemWidth: PropTypes.number
   },
 
   fling: false,
@@ -111,7 +112,7 @@ var ViewPager = React.createClass({
         var dx = gestureState.dx;
         var offsetX = -dx / this.state.viewWidth + this.childIndex;
         this.state.scrollValue.setValue(offsetX);
-      },
+      }
     });
 
     if (this.props.isLoop) {
@@ -304,13 +305,13 @@ var ViewPager = React.createClass({
       <View style={{flex: 1}}
         onLayout={(event) => {
             // console.log('ViewPager.onLayout()');
-            var viewWidth = event.nativeEvent.layout.width;
+            var viewWidth = this.props.itemWidth || event.nativeEvent.layout.width;
             if (!viewWidth || this.state.viewWidth === viewWidth) {
               return;
             }
             this.setState({
               currentPage: this.state.currentPage,
-              viewWidth: viewWidth,
+              viewWidth: viewWidth
             });
           }}
         >
