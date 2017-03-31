@@ -49,6 +49,7 @@ var SimpleScreen = React.createClass({
           renderPage={this._renderPage}
           isLoop={false}
           autoPlay={false}/>
+          renderPageIndicator={false}
 
         <TouchableHighlight style={styles.button} onPress={() => {
             this.viewpager.goToPage(count + 1);
