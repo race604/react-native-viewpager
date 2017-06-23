@@ -42,6 +42,7 @@ var ViewPager = React.createClass({
     autoPlay: PropTypes.bool,
     animation: PropTypes.func,
     initialPage: PropTypes.number,
+    pageWidth: PropTypes.number
   },
 
   fling: false,
@@ -50,6 +51,7 @@ var ViewPager = React.createClass({
     return {
       isLoop: false,
       locked: false,
+      pageWidth: deviceWidth,
       animation: function(animate, toValue, gs) {
         return Animated.spring(animate,
           {
@@ -289,15 +291,16 @@ var ViewPager = React.createClass({
     }
 
     var sceneContainerStyle = {
-      width: viewWidth * pagesNum,
+      width: this.props.pageWidth * pagesNum,
       flex: 1,
-      flexDirection: 'row'
+      flexDirection: 'row',
+      justifyContent: 'center'
     };
 
     // this.childIndex = hasLeft ? 1 : 0;
     // this.state.scrollValue.setValue(this.childIndex);
     var translateX = this.state.scrollValue.interpolate({
-      inputRange: [0, 1], outputRange: [0, -viewWidth]
+      inputRange: [0, 1], outputRange: [(viewWidth - this.props.pageWidth)/2, -this.props.pageWidth+(viewWidth - this.props.pageWidth)/2]
     });
 
     return (
