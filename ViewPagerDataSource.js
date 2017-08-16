@@ -1,7 +1,5 @@
 'use strict';
 
-//var warning = require('warning');
-
 function defaultGetPageData(
   dataBlob: any,
   pageID: number | string,
@@ -60,8 +58,6 @@ class ViewPagerDataSource {
    */
   pageShouldUpdate(pageIndex: number): bool {
     var needsUpdate = this._dirtyPages[pageIndex];
-    //    warning(needsUpdate !== undefined,
-    //  'missing dirtyBit for section, page: ' + pageIndex);
     return needsUpdate;
   }
 
@@ -73,8 +69,6 @@ class ViewPagerDataSource {
       return null;
     }
     var pageID = this.pageIdentities[pageIndex];
-    //    warning(pageID !== undefined,
-    //      'renderPage called on invalid section: ' + pageID);
     return this._getPageData(this._dataBlob,pageID);
   }
 
@@ -123,7 +117,6 @@ function keyedDictionaryFromArray(arr) {
   var result = {};
   for (var ii = 0; ii < arr.length; ii++) {
     var key = arr[ii];
-    //    warning(!result[key], 'Value appears more than once in array: ' + key);
     result[key] = true;
   }
   return result;
