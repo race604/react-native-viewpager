@@ -30,7 +30,7 @@ var styles = StyleSheet.create({
     width: DOT_SIZE,
     height: DOT_SIZE,
     borderRadius: DOT_SIZE / 2,
-    backgroundColor: '#E0E1E2',
+    borderColor: '#bfbfbf',
     margin: DOT_SAPCE,
   },
 
@@ -39,7 +39,7 @@ var styles = StyleSheet.create({
     width: DOT_SIZE,
     height: DOT_SIZE,
     borderRadius: DOT_SIZE / 2,
-    backgroundColor: '#80ACD0',
+    backgroundColor: '#c0c0c0',
     margin: DOT_SAPCE,
   },
 });
