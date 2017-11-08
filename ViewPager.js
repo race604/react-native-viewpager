@@ -235,7 +235,7 @@ var ViewPager = React.createClass({
     }
   },
 
-  _getPage(pageIdx: number, loop:boolean = false ) {
+  _getPage(pageIdx: number, loop:boolean) {
     var dataSource = this.props.dataSource;
     var pageID = dataSource.pageIdentities[pageIdx];
     return (
