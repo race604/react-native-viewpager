@@ -39,6 +39,7 @@ var ViewPager = require('react-native-viewpager');
 * **`onChangePage`**: page change callback,
 * **`renderPageIndicator`**: render custom ViewPager indicator.
 * **`initialPage`**: show initially some other page than first page.
+* **`selectedPage`**: allow parent component to change page of pager.
 
 ## Page Transition Animation Controls
 
@@ -50,6 +51,8 @@ var ViewPager = require('react-native-viewpager');
 <ViewPager
     dataSource={this.state.dataSource}
     renderPage={this._renderPage}
+    selectedPage={this.state.currentPage}
+    onChangePage={(page)=>this.setState({currentPage:page})} //sync parent state with component state;
     animation = {(animatedValue, toValue, gestureState) => {
     // Use the horizontal velocity of the swipe gesture
     // to affect the length of the transition so the faster you swipe
