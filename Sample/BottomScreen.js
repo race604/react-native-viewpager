@@ -52,6 +52,7 @@ var ImagesScreen = React.createClass({
         onChangePage={this._onChangePage}
         isLoop={false}
         autoPlay={false}/>
+        renderPageIndicator={false}
     );
   },
 

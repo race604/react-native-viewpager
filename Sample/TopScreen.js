@@ -43,6 +43,7 @@ var TopScreen = React.createClass({
         renderPage={this._renderPage}
         isLoop={true}
         autoPlay={true}/>
+        renderPageIndicator={false}
     );
   },
 
