@@ -48,7 +48,7 @@ var styles = StyleSheet.create({
   },
 });
 
-var DefaultViewPageIndicator = React.createClass({
+export default class DefaultViewPageIndicator extends React.component{
   propTypes: {
     goToPage: PropTypes.func,
     activePage: PropTypes.number,
@@ -102,6 +102,4 @@ var DefaultViewPageIndicator = React.createClass({
       </View>
     );
   },
-});
-
-module.exports = DefaultViewPageIndicator;
+};
