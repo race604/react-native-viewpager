@@ -21,7 +21,7 @@ var DefaultViewPageIndicator = require('./DefaultViewPageIndicator');
 var deviceWidth = Dimensions.get('window').width;
 var ViewPagerDataSource = require('./ViewPagerDataSource');
 
-var ViewPager = React.createClass({
+export default class ViewPager extend React.Component{
   mixins: [TimerMixin],
 
   statics: {
@@ -329,7 +329,7 @@ var ViewPager = React.createClass({
       </View>
     );
   }
-});
+};
 
 var styles = StyleSheet.create({
   indicators: {
@@ -342,5 +342,3 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
 });
-
-module.exports = ViewPager;
