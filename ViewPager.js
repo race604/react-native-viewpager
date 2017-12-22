@@ -279,12 +279,14 @@ var ViewPager = React.createClass({
       pagesNum++;
 
       // right page
-      if (this.state.currentPage < pageIDs.length - 1) {
-        bodyComponents.push(this._getPage(this.state.currentPage + 1));
-        pagesNum++;
-      } else if (this.state.currentPage == pageIDs.length - 1 && this.props.isLoop) {
-        bodyComponents.push(this._getPage(0, true));
-        pagesNum++;
+      if (pageIDs.length > 1) {
+        if (this.state.currentPage < pageIDs.length - 1) {
+          bodyComponents.push(this._getPage(this.state.currentPage + 1));
+          pagesNum++;
+        } else if (this.state.currentPage == pageIDs.length - 1 && this.props.isLoop) {
+          bodyComponents.push(this._getPage(0, true));
+          pagesNum++;
+        }
       }
     }
 
