@@ -37,8 +37,9 @@ var ViewPager = require('react-native-viewpager');
 * **`isLoop`**: `true` to run in infinite scroll mode,
 * **`locked`**: `true` to disable touch scroll,
 * **`onChangePage`**: page change callback,
-* **`renderPageIndicator`**: render custom ViewPager indicator.
-* **`initialPage`**: show initially some other page than first page.
+* **`renderPageIndicator`**: render custom ViewPager indicator,
+* **`distanceThreshold`**: the relative screen distance at which a transition is triggered (from 0 to 1),
+* **`velocityThreshold`**: the velocity at which a transition is triggered (see [gestureState.vx](https://facebook.github.io/react-native/docs/panresponder.html)).
 
 ## Page Transition Animation Controls
 
