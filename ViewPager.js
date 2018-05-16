@@ -108,6 +108,10 @@ var ViewPager = React.createClass({
 
       // Dragging, move the view with the touch
       onPanResponderMove: (e, gestureState) => {
+        if (this._autoPlayer) {
+          this.clearInterval(this._autoPlayer);
+          this._autoPlayer = null;
+        }
         var dx = gestureState.dx;
         var offsetX = -dx / this.state.viewWidth + this.childIndex;
         this.state.scrollValue.setValue(offsetX);
@@ -215,6 +219,7 @@ var ViewPager = React.createClass({
       postChange();
       moved && this.props.onChangePage && this.props.onChangePage(pageNumber);
     }
+    this._startAutoPlay();
   },
 
   getCurrentPage() {
