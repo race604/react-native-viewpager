@@ -2,7 +2,7 @@
 
 var React = require('react');
 var PropTypes = require('prop-types');
-
+var createReactClass = require('create-react-class');
 var ReactNative = require('react-native');
 var {
   Dimensions,
@@ -12,6 +12,7 @@ var {
   PanResponder,
   Animated,
   StyleSheet,
+  ViewPropTypes,
 } = ReactNative;
 
 var StaticRenderer = require('react-native/Libraries/Components/StaticRenderer');
@@ -21,7 +22,7 @@ var DefaultViewPageIndicator = require('./DefaultViewPageIndicator');
 var deviceWidth = Dimensions.get('window').width;
 var ViewPagerDataSource = require('./ViewPagerDataSource');
 
-var ViewPager = React.createClass({
+var ViewPager = createReactClass({
   mixins: [TimerMixin],
 
   statics: {
@@ -29,7 +30,7 @@ var ViewPager = React.createClass({
   },
 
   propTypes: {
-    ...View.propTypes,
+    ...ViewPropTypes,
     dataSource: PropTypes.instanceOf(ViewPagerDataSource).isRequired,
     renderPage: PropTypes.func.isRequired,
     onChangePage: PropTypes.func,
@@ -49,7 +50,8 @@ var ViewPager = React.createClass({
   getDefaultProps() {
     return {
       isLoop: false,
-      locked: false,
+	  locked: false,
+	  autoScrollInterval: 5000,
       animation: function(animate, toValue, gs) {
         return Animated.spring(animate,
           {
@@ -86,7 +88,8 @@ var ViewPager = React.createClass({
 
       this.props.hasTouch && this.props.hasTouch(false);
 
-      this.movePage(step, gestureState);
+	  this.movePage(step, gestureState);
+	  this.restartTimer()
     }
 
     this._panResponder = PanResponder.create({
@@ -142,7 +145,7 @@ var ViewPager = React.createClass({
       }
     }
 
-    if (nextProps.dataSource) {
+    if (nextProps.dataSource && nextProps.dataSource !== this.props.dataSource) {
       var maxPage = nextProps.dataSource.getPageCount() - 1;
       var constrainedPage = Math.max(0, Math.min(this.state.currentPage, maxPage));
       this.setState({
@@ -163,9 +166,17 @@ var ViewPager = React.createClass({
     if (!this._autoPlayer) {
       this._autoPlayer = this.setInterval(
         () => {this.movePage(1);},
-        5000
+        this.props.autoScrollInterval
       );
     }
+  },
+
+  restartTimer() {
+	if (this._autoPlayer) {
+        this.clearInterval(this._autoPlayer);
+		this._autoPlayer = null;
+		this._startAutoPlay()
+	  }
   },
 
   goToPage(pageNumber, animate = true) {
