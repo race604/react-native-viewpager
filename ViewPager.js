@@ -244,6 +244,13 @@ var ViewPager = createReactClass({
     }
   },
 
+  setCurrentPageZero(){
+      this.setState({
+          currentPage: 0,
+          viewWidth: 0,
+      })
+  },
+
   getCurrentPage() {
     return this.state.currentPage;
   },
